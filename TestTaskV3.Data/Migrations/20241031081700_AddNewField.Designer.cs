@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestTaskV3.Data;
@@ -11,9 +12,11 @@ using TestTaskV3.Data;
 namespace TestTaskV3.Data.Migrations
 {
     [DbContext(typeof(TubeContext))]
-    partial class TubeContextModelSnapshot : ModelSnapshot
+    [Migration("20241031081700_AddNewField")]
+    partial class AddNewField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

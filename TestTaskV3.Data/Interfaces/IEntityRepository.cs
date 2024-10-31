@@ -14,8 +14,11 @@ namespace TestTaskV3.Data.Interfaces;
 public interface IEntityRepository<T> where T : IEntity
 {
     T Add(T model);
+    IEnumerable<T> AddRange(IEnumerable<T> models);
+    T Get(Guid guid);
     bool Update(T models);
     bool Delete(T model);
+    bool Delete(Guid guid);
     IQueryable<T> GetListQuery();
     List<T> GetList();
     bool Any(Expression<Func<T, bool>> func);

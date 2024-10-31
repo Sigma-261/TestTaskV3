@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TestTaskV3.Data.Models;
+using System.Text.Json.Serialization;
 
 namespace TestTask.Models;
 
@@ -26,5 +27,6 @@ public class Pack : Entity
     /// Труба
     /// </summary>
     [ForeignKey("IdTube")]
+    [JsonIgnore]
     public Tube Tube { get; set; }
 }

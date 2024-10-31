@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TestTaskV3.Data.Models;
+using System.Xml.Serialization;
+using System.Text.Json.Serialization;
 
 namespace TestTask.Models;
 
@@ -23,6 +25,12 @@ public class Tube : Entity
     public bool IsDefect { get; set; }
 
     /// <summary>
+    /// Является ли труба упакованной
+    /// </summary>
+    [Column("IS_PACKED")]
+    public bool IsPacked { get; set; }
+
+    /// <summary>
     /// Идентификатор марки стали
     /// </summary>
     [Column("ID_GRADE")]
@@ -32,6 +40,8 @@ public class Tube : Entity
     /// Марка стали
     /// </summary>
     [ForeignKey("IdGrade")]
+    [JsonIgnore]
+    [XmlIgnore]
     public SteelGrade Grade { get; set; }
 
     /// <summary>

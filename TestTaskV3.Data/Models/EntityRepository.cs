@@ -44,10 +44,48 @@ public class EntityRepository<T> : IEntityRepository<T> where T : class, IEntity
     /// <returns></returns>
     public virtual T Add(T model)
     {
-        _db.Add(model);
-        _db.SaveChanges();
+        try
+        {
+            _db.Add(model);
+            _db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            model.Guid = Guid.Empty;
+            _logger.LogError($"Ошибка при добавлении сущности: {ex}");
+        }
 
         return model;
+    }
+
+    /// <summary>
+    /// Добавляет элементы указанной коллекции
+    /// </summary>
+    /// <param name="models"></param>
+    /// <returns></returns>
+    public virtual IEnumerable<T> AddRange(IEnumerable<T> models)
+    {
+        try
+        {
+            _db.AddRange(models);
+            _db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Ошибка при добавлении сущностей: {ex}");
+        }
+
+        return models;
+    }
+
+    /// <summary>
+    /// Получение записи по идентификатору
+    /// </summary>
+    /// <param name="guid">Guid</param>
+    /// <returns></returns>
+    public T Get(Guid guid)
+    {
+        return GetListQuery().FirstOrDefault(p => p.Guid == guid);
     }
 
     /// <summary>
@@ -84,6 +122,26 @@ public class EntityRepository<T> : IEntityRepository<T> where T : class, IEntity
             _db.SaveChanges();
 
             return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Ошибка при удалении сущности: {ex}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Удаление объекта по Guid
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <param name="userGuid"></param>
+    /// <returns></returns>
+    public virtual bool Delete(Guid guid)
+    {
+        try
+        {
+            var model = _db.Set<T>().AsNoTracking().FirstOrDefault(p => p.Guid == guid);
+            return Delete(model);
         }
         catch (Exception ex)
         {
